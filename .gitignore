@@ -1,0 +1,121 @@
+# Python
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+
+venv/
+env/
+ENV/
+.venv/
+
+# Environment Variables & Secrets
+
+.env
+.env.*
+!.env.example
+
+# IDEs & Editors
+
+.vscode/
+.idea/
+*.code-workspace
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Jupyter
+
+.ipynb_checkpoints/
+.ipynb_checkpoints
+
+# Testing & Coverage
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Type Checking & Linting
+
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+
+# Build & Packaging
+
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Logs
+
+*.log
+logs/
+outputs/logs/
+
+# Reports & Generated Outputs
+
+outputs/reports/
+outputs/charts/
+
+# Temporary Files
+
+*.tmp
+*.temp
+.cache/
+
+# Python Version Managers
+
+.python-version
+
+# Databases
+
+*.sqlite3
+*.db
+
+# Data Caches
+
+data/cache/
+
+# ML / AI Artifacts
+
+mlruns/
+wandb/
+
+# Model Files
+
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.pth
+*.onnx
+
+# Data Directories (generated or sensitive)
+
+data/raw/*
+data/processed/*
+data/embeddings/*
+
+# Keep folder structure
+
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/embeddings/.gitkeep
+
+# Docker
+
+.dockerignore
+
+# Misc
+
+*.swp
+*.swo
