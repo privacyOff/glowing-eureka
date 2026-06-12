@@ -28,6 +28,10 @@ class Settings(BaseSettings):
         "cardiffnlp/twitter-roberta-base-sentiment"
     )
 
+    SENTIMENT_POSITIVE_THRESHOLD: float = 0.05
+
+    SENTIMENT_NEGATIVE_THRESHOLD: float = -0.05
+
     NER_MODEL: str = "en_core_web_sm"
 
     CLASSIFICATION_MODEL: str = (

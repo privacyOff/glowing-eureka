@@ -97,7 +97,22 @@ class Call(Base):
         nullable=True,
     )
 
-    sentiment_score: Mapped[float | None] = mapped_column(
+    sentiment_positive: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True,
+    )
+
+    sentiment_neutral: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True,
+    )
+
+    sentiment_negative: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True,
+    )
+
+    sentiment_compound: Mapped[float | None] = mapped_column(
         Float,
         nullable=True,
     )
