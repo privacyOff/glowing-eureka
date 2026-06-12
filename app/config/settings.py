@@ -35,6 +35,9 @@ class Settings(BaseSettings):
 
     LOG_PATH: str = "logs/application.log"
 
+    LOG_LEVEL: str = "INFO"
+    LOG_FORMAT: str = "json"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

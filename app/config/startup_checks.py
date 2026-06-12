@@ -8,6 +8,11 @@ from sqlalchemy import create_engine, text
 from app.config.settings import Settings
 from app.core.model_registry import ModelRegistry
 
+from app.monitoring.logger import get_logger
+from app.monitoring.events import PipelineEvents
+
+logger = get_logger("startup")
+
 
 def create_directories(settings: Settings) -> None:
     """
@@ -29,14 +34,27 @@ def create_directories(settings: Settings) -> None:
 
 
 def check_database(settings: Settings) -> None:
-    """
-    Verify database connectivity.
-    """
+    try:
+        engine = create_engine(settings.DATABASE_URL)
 
-    engine = create_engine(settings.DATABASE_URL)
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
 
-    with engine.connect() as connection:
-        connection.execute(text("SELECT 1"))
+        logger.info(
+            event=PipelineEvents.DATABASE_CONNECTED,
+            message="Database connection established",
+            status="success",
+        )
+
+    except Exception as e:
+        logger.error(
+            event=PipelineEvents.DATABASE_CONNECTION_FAILED,
+            message="Database connection failed",
+            status="failed",
+            error_type=type(e).__name__,
+            error_message=str(e),
+        )
+        raise
 
 
 def check_gemini(settings: Settings) -> None:
@@ -51,9 +69,10 @@ def check_gemini(settings: Settings) -> None:
                 "GEMINI_API_KEY is required."
             )
 
-        print(
-            "[WARNING] Gemini key missing. "
-            "Gemini features disabled."
+        logger.warning(
+            event=PipelineEvents.GEMINI_DISABLED,
+            message="Gemini key missing",
+            status="disabled",
         )
         return
 
@@ -71,8 +90,12 @@ def check_gemini(settings: Settings) -> None:
                 f"Gemini unavailable: {e}"
             )
 
-        print(
-            f"[WARNING] Gemini unavailable: {e}"
+        logger.warning(
+            event=PipelineEvents.GEMINI_UNAVAILABLE,
+            message="Gemini unavailable",
+            status="warning",
+            error_type=type(e).__name__,
+            error_message=str(e),
         )
 
 
@@ -105,10 +128,6 @@ def preload_embedding_model(
 def run_startup_checks(
     settings: Settings,
 ) -> None:
-    """
-    Execute startup sequence.
-    """
-
     create_directories(settings)
 
     check_database(settings)
@@ -118,3 +137,9 @@ def run_startup_checks(
     preload_whisper(settings)
 
     preload_embedding_model(settings)
+
+    logger.info(
+        event=PipelineEvents.STARTUP_CHECKS_PASSED,
+        message="Startup checks completed",
+        status="success",
+    )
