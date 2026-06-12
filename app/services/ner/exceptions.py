@@ -1,0 +1,2 @@
+class NERExtractionError(Exception):
+    pass

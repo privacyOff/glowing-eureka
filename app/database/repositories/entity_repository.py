@@ -19,6 +19,33 @@ class EntityRepository(BaseRepository):
 
         return entity
 
+    def create_many(
+        self,
+        call_id,
+        entities,
+    ):
+
+        db_entities = []
+
+        for entity in entities:
+
+            db_entities.append(
+                Entity(
+                    call_id=call_id,
+                    entity_text=entity.text,
+                    entity_type=entity.label,
+                    confidence=entity.confidence,
+                    start_offset=entity.start,
+                    end_offset=entity.end,
+                )
+            )
+
+        self.db.bulk_save_objects(
+            db_entities
+        )
+
+        self.db.commit()
+
     def bulk_create(
         self,
         entities: list[Entity],

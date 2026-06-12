@@ -32,7 +32,11 @@ class Settings(BaseSettings):
 
     SENTIMENT_NEGATIVE_THRESHOLD: float = -0.05
 
-    NER_MODEL: str = "en_core_web_sm"
+    NER_MODEL: str = "en_core_web_md"
+
+    ENABLE_CUSTOM_ENTITIES: bool = True
+
+    ENABLE_REGEX_ENTITIES: bool = True
 
     CLASSIFICATION_MODEL: str = (
         "facebook/bart-large-mnli"

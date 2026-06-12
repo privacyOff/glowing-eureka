@@ -7,6 +7,7 @@ class PipelineEvents:
 
     SENTIMENT_COMPLETED = "sentiment_completed"
 
+    NER_STARTED = "ner_started"
     NER_COMPLETED = "ner_completed"
 
     CLASSIFICATION_COMPLETED = "classification_completed"

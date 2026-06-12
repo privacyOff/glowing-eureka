@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import spacy
 import whisper
 from google import generativeai as genai
 from sentence_transformers import SentenceTransformer
@@ -182,6 +183,26 @@ def preload_embedding_model(
     )
 
 
+def preload_ner_model(
+    settings: Settings,
+) -> None:
+    """
+    Load NER model.
+    """
+
+    ModelRegistry.ner_model = (
+        spacy.load(
+            settings.NER_MODEL
+        )
+    )
+
+    logger.info(
+        event=PipelineEvents.MODELS_LOADED,
+        message=f"Loaded NER model: {settings.NER_MODEL}",
+        status="success",
+    )
+
+
 def run_startup_checks(
     settings: Settings,
 ) -> None:
@@ -206,6 +227,10 @@ def run_startup_checks(
     )
 
     preload_embedding_model(
+        settings
+    )
+
+    preload_ner_model(
         settings
     )
 
