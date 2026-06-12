@@ -9,6 +9,7 @@ from sqlalchemy import (
     Index,
     String,
     Text,
+    Integer,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import (
@@ -44,6 +45,41 @@ class Call(Base):
     file_path: Mapped[str] = mapped_column(
         String(500),
         nullable=False,
+    )
+
+    duration_seconds: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True,
+    )
+
+    sample_rate: Mapped[int | None] = mapped_column(
+        Integer,
+        nullable=True,
+    )
+
+    channels: Mapped[int | None] = mapped_column(
+        Integer,
+        nullable=True,
+    )
+
+    file_size_bytes: Mapped[int | None] = mapped_column(
+        Integer,
+        nullable=True,
+    )
+
+    detected_language: Mapped[str | None] = mapped_column(
+        String(20),
+        nullable=True,
+    )
+
+    whisper_model: Mapped[str | None] = mapped_column(
+        String(100),
+        nullable=True,
+    )
+
+    transcription_duration_ms: Mapped[float | None] = mapped_column(
+        Float,
+        nullable=True,
     )
 
     transcript: Mapped[str | None] = mapped_column(
@@ -98,15 +134,12 @@ class Call(Base):
 
     categories: Mapped[list["CallCategory"]] = relationship(
         back_populates="call",
-        cascade="all, delete-orphan",
     )
 
     entities: Mapped[list["Entity"]] = relationship(
         back_populates="call",
-        cascade="all, delete-orphan",
     )
 
     embeddings: Mapped[list["CallEmbedding"]] = relationship(
         back_populates="call",
-        cascade="all, delete-orphan",
     )

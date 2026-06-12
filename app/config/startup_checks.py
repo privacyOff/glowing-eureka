@@ -7,14 +7,61 @@ from sqlalchemy import create_engine, text
 
 from app.config.settings import Settings
 from app.core.model_registry import ModelRegistry
-
-from app.monitoring.logger import get_logger
 from app.monitoring.events import PipelineEvents
+from app.monitoring.logger import get_logger
 
 logger = get_logger("startup")
 
 
-def create_directories(settings: Settings) -> None:
+def validate_configuration(
+    settings: Settings,
+) -> None:
+    """
+    Validate application configuration.
+    """
+
+    if settings.MAX_AUDIO_DURATION_MINUTES <= 0:
+        raise ValueError(
+            "MAX_AUDIO_DURATION_MINUTES must be greater than 0."
+        )
+
+    allowed_formats = {
+        "wav",
+        "mp3",
+        "m4a",
+        "flac",
+    }
+
+    configured_formats = {
+        fmt.lower()
+        for fmt in settings.supported_audio_formats
+    }
+
+    if not configured_formats:
+        raise ValueError(
+            "SUPPORTED_AUDIO_FORMATS cannot be empty."
+        )
+
+    invalid_formats = (
+        configured_formats - allowed_formats
+    )
+
+    if invalid_formats:
+        raise ValueError(
+            "Unsupported audio formats configured: "
+            f"{', '.join(sorted(invalid_formats))}"
+        )
+
+    logger.info(
+        event=PipelineEvents.STARTUP_CHECKS_PASSED,
+        message="Configuration validation passed",
+        status="success",
+    )
+
+
+def create_directories(
+    settings: Settings,
+) -> None:
     """
     Create required directories.
     """
@@ -33,12 +80,18 @@ def create_directories(settings: Settings) -> None:
         )
 
 
-def check_database(settings: Settings) -> None:
+def check_database(
+    settings: Settings,
+) -> None:
     try:
-        engine = create_engine(settings.DATABASE_URL)
+        engine = create_engine(
+            settings.DATABASE_URL
+        )
 
         with engine.connect() as connection:
-            connection.execute(text("SELECT 1"))
+            connection.execute(
+                text("SELECT 1")
+            )
 
         logger.info(
             event=PipelineEvents.DATABASE_CONNECTED,
@@ -57,7 +110,9 @@ def check_database(settings: Settings) -> None:
         raise
 
 
-def check_gemini(settings: Settings) -> None:
+def check_gemini(
+    settings: Settings,
+) -> None:
     """
     Verify Gemini availability.
     """
@@ -99,7 +154,9 @@ def check_gemini(settings: Settings) -> None:
         )
 
 
-def preload_whisper(settings: Settings) -> None:
+def preload_whisper(
+    settings: Settings,
+) -> None:
     """
     Load Whisper model.
     """
@@ -128,15 +185,29 @@ def preload_embedding_model(
 def run_startup_checks(
     settings: Settings,
 ) -> None:
-    create_directories(settings)
+    validate_configuration(
+        settings
+    )
 
-    check_database(settings)
+    create_directories(
+        settings
+    )
 
-    check_gemini(settings)
+    check_database(
+        settings
+    )
 
-    preload_whisper(settings)
+    check_gemini(
+        settings
+    )
 
-    preload_embedding_model(settings)
+    preload_whisper(
+        settings
+    )
+
+    preload_embedding_model(
+        settings
+    )
 
     logger.info(
         event=PipelineEvents.STARTUP_CHECKS_PASSED,

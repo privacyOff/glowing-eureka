@@ -3,6 +3,15 @@ from enum import Enum
 
 class ProcessingStatus(str, Enum):
     UPLOADED = "uploaded"
+
+    TRANSCRIBING = "transcribing"
+
     TRANSCRIBED = "transcribed"
-    PROCESSED = "processed"
+
+    ANALYZING = "analyzing"
+
+    EMBEDDING = "embedding"
+
+    COMPLETED = "completed"
+
     FAILED = "failed"

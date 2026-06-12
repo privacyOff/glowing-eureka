@@ -1,7 +1,10 @@
 from functools import lru_cache
 
 from pydantic import Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import (
+    BaseSettings,
+    SettingsConfigDict,
+)
 
 
 class Settings(BaseSettings):
@@ -31,12 +34,28 @@ class Settings(BaseSettings):
         "facebook/bart-large-mnli"
     )
 
+    MAX_AUDIO_DURATION_MINUTES: int = 60
+
+    SUPPORTED_AUDIO_FORMATS: str = (
+        "wav,mp3,m4a,flac"
+    )
+
     FAISS_PATH: str = "data/embeddings"
 
     LOG_PATH: str = "logs/application.log"
 
     LOG_LEVEL: str = "INFO"
+
     LOG_FORMAT: str = "json"
+
+    @property
+    def supported_audio_formats(
+        self,
+    ) -> list[str]:
+        return [
+            fmt.strip()
+            for fmt in self.SUPPORTED_AUDIO_FORMATS.split(",")
+        ]
 
     model_config = SettingsConfigDict(
         env_file=".env",
