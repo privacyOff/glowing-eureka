@@ -52,6 +52,20 @@ class Settings(BaseSettings):
 
     FAISS_PATH: str = "data/embeddings"
 
+    FAISS_INDEX_FILE: str = (
+        "data/embeddings/faiss.index"
+    )
+
+    FAISS_METADATA_FILE: str = (
+        "data/embeddings/metadata.pkl"
+    )
+
+    FAISS_INDEX_METADATA_FILE: str = (
+        "data/embeddings/index_metadata.json"
+    )
+
+    SEARCH_TOP_K: int = 5
+
     LOG_PATH: str = "logs/application.log"
 
     LOG_LEVEL: str = "INFO"
