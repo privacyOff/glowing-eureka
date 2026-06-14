@@ -42,6 +42,8 @@ class Settings(BaseSettings):
         "facebook/bart-large-mnli"
     )
 
+    CLASSIFICATION_THRESHOLD: float = 0.60
+
     MAX_AUDIO_DURATION_MINUTES: int = 60
 
     SUPPORTED_AUDIO_FORMATS: str = (

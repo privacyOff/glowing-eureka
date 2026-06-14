@@ -10,7 +10,13 @@ class PipelineEvents:
     NER_STARTED = "ner_started"
     NER_COMPLETED = "ner_completed"
 
-    CLASSIFICATION_COMPLETED = "classification_completed"
+    CLASSIFICATION_STARTED = (
+        "classification_started"
+    )
+
+    CLASSIFICATION_COMPLETED = (
+        "classification_completed"
+    )
 
     EMBEDDING_GENERATED = "embedding_generated"
 

@@ -1,6 +1,9 @@
 from uuid import UUID
 
 from app.database.models.call import Call
+from app.database.models.category import (
+    CallCategory,
+)
 from app.database.models.enums import ProcessingStatus
 from app.database.repositories.base_repository import (
     BaseRepository,
@@ -117,6 +120,30 @@ class CallRepository(BaseRepository):
         self.db.commit()
 
         return True
+
+    def update_categories(
+        self,
+        call_id,
+        predictions,
+    ) -> None:
+
+        categories = []
+
+        for prediction in predictions:
+
+            categories.append(
+                CallCategory(
+                    call_id=call_id,
+                    category=prediction.category,
+                    confidence=prediction.confidence,
+                )
+            )
+
+        self.db.add_all(
+            categories
+        )
+
+        self.db.commit()
 
     def soft_delete(
         self,

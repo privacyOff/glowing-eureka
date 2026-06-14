@@ -5,6 +5,7 @@ import whisper
 from google import generativeai as genai
 from sentence_transformers import SentenceTransformer
 from sqlalchemy import create_engine, text
+from transformers import pipeline
 
 from app.config.settings import Settings
 from app.core.model_registry import ModelRegistry
@@ -168,6 +169,12 @@ def preload_whisper(
         )
     )
 
+    logger.info(
+        event=PipelineEvents.MODELS_LOADED,
+        message=f"Loaded Whisper model: {settings.WHISPER_MODEL}",
+        status="success",
+    )
+
 
 def preload_embedding_model(
     settings: Settings,
@@ -180,6 +187,12 @@ def preload_embedding_model(
         SentenceTransformer(
             settings.EMBEDDING_MODEL
         )
+    )
+
+    logger.info(
+        event=PipelineEvents.MODELS_LOADED,
+        message=f"Loaded embedding model: {settings.EMBEDDING_MODEL}",
+        status="success",
     )
 
 
@@ -199,6 +212,30 @@ def preload_ner_model(
     logger.info(
         event=PipelineEvents.MODELS_LOADED,
         message=f"Loaded NER model: {settings.NER_MODEL}",
+        status="success",
+    )
+
+
+def preload_classification_model(
+    settings: Settings,
+) -> None:
+    """
+    Load zero-shot classification model.
+    """
+
+    ModelRegistry.classification_model = (
+        pipeline(
+            task="zero-shot-classification",
+            model=settings.CLASSIFICATION_MODEL,
+        )
+    )
+
+    logger.info(
+        event=PipelineEvents.MODELS_LOADED,
+        message=(
+            f"Loaded classification model: "
+            f"{settings.CLASSIFICATION_MODEL}"
+        ),
         status="success",
     )
 
@@ -231,6 +268,10 @@ def run_startup_checks(
     )
 
     preload_ner_model(
+        settings
+    )
+
+    preload_classification_model(
         settings
     )
 
