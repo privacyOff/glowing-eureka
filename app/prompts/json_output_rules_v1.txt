@@ -1,0 +1,25 @@
+Prompt Version: json_output_rules_v1
+
+Return valid JSON only.
+
+Do not use markdown.
+
+Do not wrap JSON in code fences.
+
+Do not include explanations.
+
+Do not include introductory text.
+
+Do not include notes.
+
+Do not include trailing commas.
+
+Ensure all required fields exist.
+
+Ensure arrays are arrays.
+
+Ensure strings are strings.
+
+Never return null unless explicitly requested.
+
+Do not add fields that are not defined in the schema.

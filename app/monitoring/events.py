@@ -2,13 +2,23 @@ class PipelineEvents:
     # Success Events
     AUDIO_UPLOADED = "audio_uploaded"
 
-    TRANSCRIPTION_STARTED = "transcription_started"
-    TRANSCRIPTION_FINISHED = "transcription_finished"
+    TRANSCRIPTION_STARTED = (
+        "transcription_started"
+    )
 
-    SENTIMENT_COMPLETED = "sentiment_completed"
+    TRANSCRIPTION_FINISHED = (
+        "transcription_finished"
+    )
+
+    SENTIMENT_COMPLETED = (
+        "sentiment_completed"
+    )
 
     NER_STARTED = "ner_started"
-    NER_COMPLETED = "ner_completed"
+
+    NER_COMPLETED = (
+        "ner_completed"
+    )
 
     CLASSIFICATION_STARTED = (
         "classification_started"
@@ -18,12 +28,39 @@ class PipelineEvents:
         "classification_completed"
     )
 
-    EMBEDDING_GENERATED = "embedding_generated"
+    EMBEDDING_GENERATED = (
+        "embedding_generated"
+    )
 
-    SEARCH_EXECUTED = "search_executed"
+    SEARCH_EXECUTED = (
+        "search_executed"
+    )
 
-    GEMINI_SUMMARY_GENERATED = (
-        "gemini_summary_generated"
+    # Gemini Summary Events
+    GEMINI_SUMMARY_STARTED = (
+        "gemini_summary_started"
+    )
+
+    GEMINI_SUMMARY_COMPLETED = (
+        "gemini_summary_completed"
+    )
+
+    # Gemini Root Cause Events
+    GEMINI_ROOT_CAUSE_STARTED = (
+        "gemini_root_cause_started"
+    )
+
+    GEMINI_ROOT_CAUSE_COMPLETED = (
+        "gemini_root_cause_completed"
+    )
+
+    # Gemini Insights Events
+    GEMINI_INSIGHTS_STARTED = (
+        "gemini_insights_started"
+    )
+
+    GEMINI_INSIGHTS_COMPLETED = (
+        "gemini_insights_completed"
     )
 
     # Failure Events
@@ -39,7 +76,9 @@ class PipelineEvents:
         "sentiment_failed"
     )
 
-    NER_FAILED = "ner_failed"
+    NER_FAILED = (
+        "ner_failed"
+    )
 
     CLASSIFICATION_FAILED = (
         "classification_failed"
@@ -49,10 +88,20 @@ class PipelineEvents:
         "embedding_failed"
     )
 
-    SEARCH_FAILED = "search_failed"
+    SEARCH_FAILED = (
+        "search_failed"
+    )
 
     GEMINI_SUMMARY_FAILED = (
         "gemini_summary_failed"
+    )
+
+    GEMINI_ROOT_CAUSE_FAILED = (
+        "gemini_root_cause_failed"
+    )
+
+    GEMINI_INSIGHTS_FAILED = (
+        "gemini_insights_failed"
     )
 
     # Infrastructure Events
